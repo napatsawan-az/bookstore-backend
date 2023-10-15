@@ -6,6 +6,7 @@ import cors from "cors";
 import "dotenv/config";
 
 const app = express();
+const database = process.env.MONGODB_URL;
 
 // Middleware for parsing request body
 app.use(express.json());
@@ -30,7 +31,7 @@ app.get("/", (request, response) => {
 app.use("/books", bookRoute);
 
 mongoose
-  .connect(process.env.MONGODB_URL)
+  .connect(database)
   .then(() => {
     console.log("App connected to database");
     app.listen(PORT, () => {
