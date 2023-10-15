@@ -1,8 +1,9 @@
 import express from "express";
-import { PORT, mongoDBURL } from "./config.js";
+import { PORT } from "./config.js";
 import mongoose from "mongoose";
 import bookRoute from "./routes/bookRoute.js";
 import cors from "cors";
+import "dotenv/config";
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(express.json());
 // Option 2: Allow Custom Origins
 app.use(
   cors({
-    origins: "http://localhost:5000",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
   })
@@ -29,7 +30,7 @@ app.get("/", (request, response) => {
 app.use("/books", bookRoute);
 
 mongoose
-  .connect(mongoDBURL)
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("App connected to database");
     app.listen(PORT, () => {
